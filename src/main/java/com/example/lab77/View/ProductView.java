@@ -60,11 +60,9 @@ public class ProductView extends VerticalLayout {
                     n1.setValue(product.getProductprice());
                 }
             }
-
-
         });
         addbtn.addClickListener(event -> {
-            if(!productNames.contains(t1.getValue())){
+            if(!productNames.contains(t1.getValue()) && t1.getValue() != null){
                 getPrice();
                 Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                 boolean product = WebClient.create()
