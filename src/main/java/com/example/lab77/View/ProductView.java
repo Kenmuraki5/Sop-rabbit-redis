@@ -62,23 +62,30 @@ public class ProductView extends VerticalLayout {
             }
         });
         addbtn.addClickListener(event -> {
-            if(!productNames.contains(t1.getValue()) || t1.getValue() != null){
-                getPrice();
-                Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
-                boolean product = WebClient.create()
-                        .post()
-                        .uri("http://localhost:8082/addProduct")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(newProduct)
-                        .retrieve()
-                        .bodyToMono(boolean.class)
-                        .block();
-                if(product){
-                    Notification notification = Notification
-                            .show("Product Add Success");
-                    loadView();
-                    clear();
+            if(!productNames.contains(t1.getValue())){
+                if (!t1.getValue().equals("")){
+                    getPrice();
+                    Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
+                    boolean product = WebClient.create()
+                            .post()
+                            .uri("http://localhost:8082/addProduct")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(newProduct)
+                            .retrieve()
+                            .bodyToMono(boolean.class)
+                            .block();
+                    if(product){
+                        Notification notification = Notification
+                                .show("Product Add Success");
+                        loadView();
+                        clear();
+                    }
                 }
+                else {
+                    Notification notification = Notification
+                            .show("Product Name is null");
+                }
+
             }
             else{
                 Notification notification = Notification
