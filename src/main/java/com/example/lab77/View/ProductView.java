@@ -25,6 +25,7 @@ public class ProductView extends VerticalLayout {
     private Button addbtn, upbtn, delbtn, clrbtn;
     private HorizontalLayout h;
     private List<Product> productList;
+    private List<String> productNames;
     private Product product;
     public ProductView(){
         h = new HorizontalLayout();
@@ -63,21 +64,27 @@ public class ProductView extends VerticalLayout {
 
         });
         addbtn.addClickListener(event -> {
-            getPrice();
-            Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
-            boolean product = WebClient.create()
-                    .post()
-                    .uri("http://localhost:8082/addProduct")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(newProduct)
-                    .retrieve()
-                    .bodyToMono(boolean.class)
-                    .block();
-            if(product){
+            if(!productNames.contains(t1.getValue())){
+                getPrice();
+                Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
+                boolean product = WebClient.create()
+                        .post()
+                        .uri("http://localhost:8082/addProduct")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(newProduct)
+                        .retrieve()
+                        .bodyToMono(boolean.class)
+                        .block();
+                if(product){
+                    Notification notification = Notification
+                            .show("Product Add Success");
+                    loadView();
+                    clear();
+                }
+            }
+            else{
                 Notification notification = Notification
-                        .show("Product Add Success");
-                loadView();
-                clear();
+                        .show("Cannot Add because have Product aleardy");
             }
         });
 
@@ -134,7 +141,7 @@ public class ProductView extends VerticalLayout {
                 .bodyToMono(new ParameterizedTypeReference<List<Product>>() {})
                 .block();
 
-        List<String> productNames = productList.stream()
+        productNames = productList.stream()
                 .map(Product::getProductname)
                 .collect(Collectors.toList());
         c1.setItems(productNames);

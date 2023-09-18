@@ -42,17 +42,6 @@ public class ProductService {
             return null;
         }
     }
-//    @CachePut(value = "myProduct", key = "'Product'")
-//    @RabbitListener(queues = "UpdateProductQueue")
-//    public Product updateProduct(Product product) {
-//        try {
-//            return productRepository.save(product);
-////            return productRepository.findAll();
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
 
     @CacheEvict(value = "myProduct", key = "'Product'")
     @RabbitListener(queues = "DeleteProductQueue")
@@ -74,9 +63,12 @@ public class ProductService {
 //    @Cacheable(value = "myProduct", key = "'Product:' + 'name:'+#name")
     @RabbitListener(queues = "GetNameProductQueue")
     public Product getProductByName(String name) {
-        return this.productRepository.findByName(name);
+        try{
+            return this.productRepository.findByName(name);
+        }catch (Exception e){
+            return null;
+        }
     }
-
     public Product getProductById(String id) {
         return this.productRepository.findByID(id);
     }
