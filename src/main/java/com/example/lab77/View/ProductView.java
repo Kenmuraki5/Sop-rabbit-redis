@@ -62,7 +62,7 @@ public class ProductView extends VerticalLayout {
             }
         });
         addbtn.addClickListener(event -> {
-            if(!productNames.contains(t1.getValue()) && t1.getValue() != null){
+            if(!productNames.contains(t1.getValue()) || t1.getValue() != null){
                 getPrice();
                 Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                 boolean product = WebClient.create()
@@ -102,7 +102,8 @@ public class ProductView extends VerticalLayout {
         });
 
         upbtn.addClickListener(event -> {
-            if(t1.getValue() != null){
+            if(!t1.getValue().equals("")){
+                getPrice();
                 Product newProduct = new Product(product.get_id(), t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                 productList = WebClient.create()
                         .post()
