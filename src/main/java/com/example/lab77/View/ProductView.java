@@ -94,18 +94,21 @@ public class ProductView extends VerticalLayout {
         });
 
         delbtn.addClickListener(event -> {
-            boolean res = WebClient.create()
-                    .post()
-                    .uri("http://localhost:8082/deleteProduct/{id}", product.get_id())
-                    .retrieve()
-                    .bodyToMono(boolean.class)
-                    .block();
-            if(res){
-                Notification notification = Notification
-                        .show("Delete Product Success");
-                loadView();
-                clear();
+            if(c1.getValue() != null){
+                boolean res = WebClient.create()
+                        .post()
+                        .uri("http://localhost:8082/deleteProduct/{id}", product.get_id())
+                        .retrieve()
+                        .bodyToMono(boolean.class)
+                        .block();
+                if(res){
+                    Notification notification = Notification
+                            .show("Delete Product Success");
+                    loadView();
+                    clear();
+                }
             }
+
         });
 
         upbtn.addClickListener(event -> {
