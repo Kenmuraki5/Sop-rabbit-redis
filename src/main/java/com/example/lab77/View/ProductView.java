@@ -104,7 +104,7 @@ public class ProductView extends VerticalLayout {
         });
 
         upbtn.addClickListener(event -> {
-            if(c1.getValue() != null){
+            if(t1.getValue() != null){
                 Product newProduct = new Product(product.get_id(), t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                 productList = WebClient.create()
                         .post()
@@ -123,6 +123,9 @@ public class ProductView extends VerticalLayout {
                     loadView();
                     clear();
                 }
+            }else{
+                Notification notification = Notification
+                        .show("Cannot update because Product Name is null");
             }
 
         });
