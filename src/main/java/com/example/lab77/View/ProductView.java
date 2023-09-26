@@ -49,7 +49,7 @@ public class ProductView extends VerticalLayout {
         });
         c1.addValueChangeListener(event -> {
             if(c1.getValue() != null){
-                product = WebClient.create().get().uri("http://localhost:8082/getproductName/" + c1.getValue())
+                product = WebClient.create().get().uri("http://localhost:8080/getproductName/" + c1.getValue())
                         .retrieve().bodyToMono(Product.class)
                         .block();
 
@@ -68,7 +68,7 @@ public class ProductView extends VerticalLayout {
                     Product newProduct = new Product(null, t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                     boolean product = WebClient.create()
                             .post()
-                            .uri("http://localhost:8082/addProduct")
+                            .uri("http://localhost:8080/addProduct")
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(newProduct)
                             .retrieve()
@@ -97,7 +97,7 @@ public class ProductView extends VerticalLayout {
             if(c1.getValue() != null){
                 boolean res = WebClient.create()
                         .post()
-                        .uri("http://localhost:8082/deleteProduct/{id}", product.get_id())
+                        .uri("http://localhost:8080/deleteProduct/{id}", product.get_id())
                         .retrieve()
                         .bodyToMono(boolean.class)
                         .block();
@@ -117,7 +117,7 @@ public class ProductView extends VerticalLayout {
                 Product newProduct = new Product(product.get_id(), t1.getValue(), n2.getValue(), n3.getValue(), n1.getValue());
                 productList = WebClient.create()
                         .post()
-                        .uri("http://localhost:8082/updateProduct")
+                        .uri("http://localhost:8080/updateProduct")
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(newProduct)
                         .retrieve()
@@ -148,7 +148,7 @@ public class ProductView extends VerticalLayout {
     public void loadView() {
         productList = WebClient.create()
                 .get()
-                .uri("http://localhost:8082/Product")
+                .uri("http://localhost:8080/Product")
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Product>>() {})
                 .block();
@@ -165,7 +165,7 @@ public class ProductView extends VerticalLayout {
         n1.setValue((double) 0);
     }
     public void getPrice(){
-        double res = WebClient.create().get().uri("http://localhost:8082/getPrice/{cost}/{profit}", n2.getValue(), n3.getValue())
+        double res = WebClient.create().get().uri("http://localhost:8080/getPrice/{cost}/{profit}", n2.getValue(), n3.getValue())
                 .retrieve().bodyToMono(double.class).block();
         n1.setValue(res);
     }

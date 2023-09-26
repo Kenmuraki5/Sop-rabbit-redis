@@ -69,6 +69,7 @@ public class ProductService {
             return null;
         }
     }
+
     public Product getProductById(String id) {
         return this.productRepository.findByID(id);
     }
